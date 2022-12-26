@@ -1,0 +1,46 @@
+html,
+body {
+    font-family: 'Times New Roman', Times, serif;
+    background: #5e5e68;
+}
+header {
+    min-height: 64px !important;
+}
+footer {
+    height: 50px !important;
+    color: lightgray;
+}
+a.itemLink {
+    text-decoration: none;
+}
+a.itemLink:hover {
+    text-decoration: underline;
+}
+a.nav-link {
+    color: lightgray;
+}
+a.nav-link:hover {
+    color: white;
+}
+.content {
+    min-height: calc(100vh - 64px - 50px - 6rem);
+    background: #40444d;
+}
+.content_header {
+    margin: -1.5em -1.5em 0em -1.5em;
+    background-color: #8f9297;
+}
+.posterItem {
+    width: 90px;
+    height: 120px;
+}
+input {
+    max-width: 200px;
+}
+table tbody tr td {
+    color: lightgray;
+}
+.posterItemPage{
+    width: 50vh;
+    height: 60vh;
+}

@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import { useRoutes, Outlet, BrowserRouter } from 'react-router-dom'
+import MainPage from './pages/MainPage'
+import CurrPage from './pages/CurrPage'
+import WillSee from './pages/WillSee'
+import SearchSame from './pages/SearchSame'
+import Header from './pages/components/Header'
+import Footer from './pages/components/Footer'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function Router(props) {
+  return useRoutes(props.rootRoute);
 }
 
-export default App;
+export default function App() {
+  const routes = [
+    { index: true, element: <MainPage /> },
+    { path: '/mainPage', element: <MainPage /> },
+    { path: '/mainPage/:id', element: <CurrPage /> },
+    { path: '/will-see', element: <WillSee />, label: 'Корзина' },
+    { path: '/search-same/:request', element: <SearchSame /> }
+  ];
+  const links = routes.filter(route => route.hasOwnProperty('label'));
+  const rootRoute = [
+    { path: '/', element: render(links), children: routes }
+  ];
+
+  function render(links) {
+    return (
+      <>
+        <Header links={links} />
+          <Outlet />
+        <Footer />
+      </>
+    );
+  }
+
+  return (
+    <BrowserRouter>
+      <Router rootRoute={ rootRoute } />
+    </BrowserRouter>
+  );
+}
