@@ -33,32 +33,32 @@ export default function WillSee() {
             return;
         }
         Service.update('willSee/' + item.id, item)
-        .then(()=> {
-            setItems(
-                items.map(elem =>
-                    elem.id === item.id ? {
-                        ...elem,
-                        count: item.count
-                    } : elem)
-            )
-            console.info('Done');
-        })
+            .then(() => {
+                setItems(
+                    items.map(elem =>
+                        elem.id === item.id ? {
+                            ...elem,
+                            count: item.count
+                        } : elem)
+                )
+                console.info('Done');
+            })
     };
 
     function handleAddItem(item) {
         console.info('Try to plus item in will see');
         item.count += 1;
         Service.update('willSee/' + item.id, item)
-        .then(()=> {
-            setItems(
-                items.map(elem =>
-                    elem.id === item.id ? {
-                        ...elem,
-                        count: item.count
-                    } : elem)
-            )
-            console.info('Done');
-        })
+            .then(() => {
+                setItems(
+                    items.map(elem =>
+                        elem.id === item.id ? {
+                            ...elem,
+                            count: item.count
+                        } : elem)
+                )
+                console.info('Done');
+            })
     };
 
     const searchInput = <input className="form-control my-2 me-3 mainInput" type="text" value={itemName} onChange={e => setItemName(e.target.value)} placeholder="Введите название" />

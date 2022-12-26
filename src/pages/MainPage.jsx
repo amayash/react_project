@@ -48,10 +48,9 @@ export default function Items() {
             .then(() => {
                 setItems(items.filter(elem => elem.id !== id))
                 console.log("Removed")
+                Service.delete(`willSee/${id}`)
+                    .catch((error) => '')
             });
-
-        Service.delete(`willSee/${id}`)
-            .catch((error) => '')
     };
     function handleEditItem(id) {
         console.info(`Start edit script`);
@@ -71,48 +70,49 @@ export default function Items() {
         e.preventDefault(); // страница перестает перезагружаться
         const itemObject = new ItemLine(selectedImage, itemName, itemType, itemPrice, id);
         if (!edit) {
-        console.info('Try to add item');
+            console.info('Try to add item');
 
-        Service.create('lines', itemObject)
-            .then((data) => {
-                setItems([...items, data]);
-                setItemName('');
-                setItemType('');
-                setItemPrice(1);
-                console.info('Added');
-                setModalTable(false)
-            })
-            .catch(function (error) {
-                console.error('Error:', error);
-                throw "Can't add item";
-            });
+            Service.create('lines', itemObject)
+                .then((data) => {
+                    setItems([...items, data]);
+                    setItemName('');
+                    setItemType('');
+                    setItemPrice(1);
+                    console.info('Added');
+                    setModalTable(false)
+                })
+                .catch(function (error) {
+                    console.error('Error:', error);
+                    throw "Can't add item";
+                });
         } else {
             // принимаем событие от кнопки "сохранить изменения"
             console.info('Start synchronize edit');
             Service.update("lines/" + id, itemObject)
-            .then((data1) => {
-                Service.read('willSee/' + id)
-                .then((data2) => {
-                    data1.count = data2.count;
-                    Service.update("willSee/" + id, data1)
-                    .catch((error)=>'')
-                    setItems(
-                        items.map(item =>
-                            item.id === id ? {
-                                ...item,
-                                image: data1.image,
-                                name: data1.name,
-                                type: data1.type,
-                                price: data1.price
-                            } : item)
-                    )
-                    console.info('End synchronize edit');
-                    setModalTable(false)
+                .then((data1) => {
+                    console.log(data1)
+                    Service.read('willSee/' + id)
+                        .then((data2) => {
+                            data1.count = data2.count;
+                            Service.update("willSee/" + id, data1)
+                                .catch((error) => '')
+                            setItems(
+                                items.map(item =>
+                                    item.id === id ? {
+                                        ...item,
+                                        image: data1.image,
+                                        name: data1.name,
+                                        type: data1.type,
+                                        price: data1.price
+                                    } : item)
+                            )
+                            console.info('End synchronize edit');
+                            setModalTable(false)
+                        })
                 })
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
         }
     };
     function handleAddItemToWillSee(item) {

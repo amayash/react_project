@@ -42,6 +42,10 @@ table tbody tr td {
     color: lightgray;
 }
 .posterItemPage{
-    width: 50vh;
-    height: 60vh;
+    width: 100%;
+    height: auto;
+}
+.customTable {
+    min-width: 150px;
+    max-width: 300px;
 }
