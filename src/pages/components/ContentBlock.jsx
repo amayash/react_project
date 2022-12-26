@@ -8,7 +8,9 @@ export default function ContentBlock(props) {
                 <h1 className="fs-1 fw-bold text-white ms-3">{props.title}</h1>
                 {props.contentDop}
             </div>
-            {props.valueBlock}
+            <div className="d-flex justify-content-center flex-wrap">
+                {props.valueBlock}
+            </div>
         </div>
     )
 

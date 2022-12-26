@@ -38,18 +38,18 @@ export default function SearchSame() {
         Service.create('willSee/', item)
             .catch((error) => {
                 Service.read('willSee/' + item.id)
-                .then((data) => {
-                    data.count += 1;
-                    Service.update('willSee/' + item.id, data);
-                    console.info('Done');
-                })
+                    .then((data) => {
+                        data.count += 1;
+                        Service.update('willSee/' + item.id, data);
+                        console.info('Done');
+                    })
             })
     }
 
-    const Content = (
-        <table className="table" id="tbl-items">
-            <tbody>
-                {items.map((item) =>
+    return (
+        <div>
+            <ContentBlock
+                valueBlock={items.map((item) =>
                     <Item
                         item={item}
                         key={item.id}
@@ -57,13 +57,7 @@ export default function SearchSame() {
                         openItemPageFunc={(index) => navigate(`/mainPage/${index}`)}
                     />
                 )}
-            </tbody>
-        </table>
-    )
-
-    return (
-        <div>
-            <ContentBlock valueBlock={Content} title='Поиск товара' />
+                title='Поиск товара' />
         </div>
     )
 }

@@ -71,48 +71,48 @@ export default function Items() {
         e.preventDefault(); // страница перестает перезагружаться
         const itemObject = new ItemLine(selectedImage, itemName, itemType, itemPrice, id);
         if (!edit) {
-        console.info('Try to add item');
+            console.info('Try to add item');
 
-        Service.create('lines', itemObject)
-            .then((data) => {
-                setItems([...items, data]);
-                setItemName('');
-                setItemType('');
-                setItemPrice(1);
-                console.info('Added');
-                setModalTable(false)
-            })
-            .catch(function (error) {
-                console.error('Error:', error);
-                throw "Can't add item";
-            });
+            Service.create('lines', itemObject)
+                .then((data) => {
+                    setItems([...items, data]);
+                    setItemName('');
+                    setItemType('');
+                    setItemPrice(1);
+                    console.info('Added');
+                    setModalTable(false)
+                })
+                .catch(function (error) {
+                    console.error('Error:', error);
+                    throw "Can't add item";
+                });
         } else {
             // принимаем событие от кнопки "сохранить изменения"
             console.info('Start synchronize edit');
             Service.update("lines/" + id, itemObject)
-            .then((data1) => {
-                Service.read('willSee/' + id)
-                .then((data2) => {
-                    data1.count = data2.count;
-                    Service.update("willSee/" + id, data1)
-                    .catch((error)=>'')
-                    setItems(
-                        items.map(item =>
-                            item.id === id ? {
-                                ...item,
-                                image: data1.image,
-                                name: data1.name,
-                                type: data1.type,
-                                price: data1.price
-                            } : item)
-                    )
-                    console.info('End synchronize edit');
-                    setModalTable(false)
+                .then((data1) => {
+                    Service.read('willSee/' + id)
+                        .then((data2) => {
+                            data1.count = data2.count;
+                            Service.update("willSee/" + id, data1)
+                                .catch((error) => '')
+                            setItems(
+                                items.map(item =>
+                                    item.id === id ? {
+                                        ...item,
+                                        image: data1.image,
+                                        name: data1.name,
+                                        type: data1.type,
+                                        price: data1.price
+                                    } : item)
+                            )
+                            console.info('End synchronize edit');
+                            setModalTable(false)
+                        })
                 })
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
         }
     };
     function handleAddItemToWillSee(item) {
@@ -166,25 +166,21 @@ export default function Items() {
                         <input required className="form-control" name="itemPrice" id="itemPrice" type="number" value={itemPrice} onChange={e => setItemPrice(e.target.value)} min="1" step="0.01" placeholder="Введите цену" />
                     </div>
                     <div className="text-center">
-                        <button className="btn btn-success fw-bold mx-1" type="submit">{ edit ? 'Сохранить изменения' : 'Добавить' }</button>
-                        <button className="btn btn-danger fw-bold mx-1" type="button" data-bs-dismiss="modal" onClick={() => {setEdit(false); setModalTable(false)}}>Отмена</button>
+                        <button className="btn btn-success fw-bold mx-1" type="submit">{edit ? 'Сохранить изменения' : 'Добавить'}</button>
+                        <button className="btn btn-danger fw-bold mx-1" type="button" data-bs-dismiss="modal" onClick={() => { setEdit(false); setModalTable(false) }}>Отмена</button>
                     </div>
                 </form>
             </Modal>
-            <table className="table" id="tbl-items">
-                <tbody>
-                    {items.map((item) =>
-                        <Item
-                            item={item}
-                            key={item.id}
-                            removeFunc={handleDeleteItem}
-                            editFunc={handleEditItem}
-                            addItemToWillSee={handleAddItemToWillSee}
-                            openItemPageFunc={(index) => navigate(`/mainPage/${index}`)}
-                        />
-                    )}
-                </tbody>
-            </table>
+            {items.map((item) =>
+                <Item
+                    item={item}
+                    key={item.id}
+                    removeFunc={handleDeleteItem}
+                    editFunc={handleEditItem}
+                    addItemToWillSee={handleAddItemToWillSee}
+                    openItemPageFunc={(index) => navigate(`/mainPage/${index}`)}
+                />
+            )}
         </>
     );
 

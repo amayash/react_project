@@ -26,7 +26,7 @@ export default function Registration() {
     }
 
     const Content = (
-        <form onSubmit={handleSubmit} className="d-flex flex-column fs-4 fw-bold text-white text-center align-items-center">
+        <form onSubmit={handleSubmit} className="d-flex flex-column fs-4 fw-bold text-white text-center">
             <div>
                 <label className="form-label">Имя</label>
                 <input className="form-control mainInput" type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Введите имя" />

@@ -33,42 +33,39 @@ export default function WillSee() {
             return;
         }
         Service.update('willSee/' + item.id, item)
-        .then(()=> {
-            setItems(
-                items.map(elem =>
-                    elem.id === item.id ? {
-                        ...elem,
-                        count: item.count
-                    } : elem)
-            )
-            console.info('Done');
-        })
+            .then(() => {
+                setItems(
+                    items.map(elem =>
+                        elem.id === item.id ? {
+                            ...elem,
+                            count: item.count
+                        } : elem)
+                )
+                console.info('Done');
+            })
     };
 
     function handleAddItem(item) {
         console.info('Try to plus item in will see');
         item.count += 1;
         Service.update('willSee/' + item.id, item)
-        .then(()=> {
-            setItems(
-                items.map(elem =>
-                    elem.id === item.id ? {
-                        ...elem,
-                        count: item.count
-                    } : elem)
-            )
-            console.info('Done');
-        })
+            .then(() => {
+                setItems(
+                    items.map(elem =>
+                        elem.id === item.id ? {
+                            ...elem,
+                            count: item.count
+                        } : elem)
+                )
+                console.info('Done');
+            })
     };
 
-    const searchInput = <input className="form-control my-2 me-3 mainInput" type="text" value={itemName} onChange={e => setItemName(e.target.value)} placeholder="Введите название" />
-
-    const content = (
-        <>
-            <table className="table" id="tbl-items">
-                <tbody>
-                     {items.map(item =>
-                        (itemName === '' ? true : item.name.toLowerCase().includes(itemName.toLowerCase())) ?
+    return (
+        <div>
+            <ContentBlock
+                valueBlock={items.map(item =>
+                    (itemName === '' ? true : item.name.toLowerCase().includes(itemName.toLowerCase())) ?
                         <Item
                             item={item}
                             countItems={item.count}
@@ -78,14 +75,10 @@ export default function WillSee() {
                             addItemToWillSee={handleAddItem}
                             openItemPageFunc={(index) => navigate(`/mainPage/${index}`)}
                         /> : null)
-                    }
-                </tbody>
-            </table>
-        </>
-    )
-    return (
-        <div>
-            <ContentBlock valueBlock={content} title="Корзина" contentDop={searchInput}/>
+                }
+                title="Корзина"
+                contentDop={<input className="form-control my-2 me-3 mainInput"
+                    type="text" value={itemName} onChange={e => setItemName(e.target.value)} placeholder="Введите название" />} />
         </div>
     )
 }

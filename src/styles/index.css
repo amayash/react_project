@@ -2,6 +2,7 @@ html,
 body {
     font-family: 'Times New Roman', Times, serif;
     background: #5e5e68;
+    color: lightgray;
 }
 header {
     min-height: 64px !important;
@@ -37,9 +38,6 @@ a:hover {
 }
 .mainInput {
     max-width: 200px !important;
-}
-table tbody tr td {
-    color: lightgray;
 }
 .posterItemPage{
     width: 50vh;
