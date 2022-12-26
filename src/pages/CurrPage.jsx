@@ -20,9 +20,10 @@ export default function CurrPage() {
                 throw "Can't get item";
             });
     }, []);
-    
-    async function handleAddItemToWillSee(item) {
+
+    function handleAddItemToWillSee(item) {
         console.info('Try to plus item in will see');
+        item.count = 1;
         Service.create('willSee/', item)
             .catch((error) => {
                 Service.read('willSee/' + item.id)
