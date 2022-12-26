@@ -10,20 +10,17 @@ export default function CurrPage() {
     const [items, setItems] = useState({});
 
     useEffect(() => {
-        fetch("http://localhost:8079/lines/" + params.id)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
+        Service.read('lines/', params.id)
+            .then((data) => {
                 console.info('Get item success');
-                setItems(data);
+                setItems(data[0]);
             })
             .catch(function (error) {
                 console.error('Error:', error);
                 throw "Can't get item";
             });
     }, []);
-
+    
     async function handleAddItemToWillSee(item) {
         console.info('Try to plus item in will see');
         Service.create('willSee/', item)
