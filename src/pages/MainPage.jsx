@@ -76,7 +76,6 @@ export default function Items() {
         Service.create('lines', itemObject)
             .then((data) => {
                 setItems([...items, data]);
-
                 setItemName('');
                 setItemType('');
                 setItemPrice(1);
@@ -91,31 +90,34 @@ export default function Items() {
             // принимаем событие от кнопки "сохранить изменения"
             console.info('Start synchronize edit');
             Service.update("lines/" + id, itemObject)
-            .then((data) => {
-                Service.update("will-see/" + id, data)
-                .catch((error)=>'')
-                setItems(
-                    items.map(item =>
-                        item.id === id ? {
-                            ...item,
-                            image: data.image,
-                            name: data.name,
-                            type: data.type,
-                            count: data.count,
-                            price: data.price
-                        } : item)
-                )
-                console.info('End synchronize edit');
-                setModalTable(false)
+            .then((data1) => {
+                Service.read('willSee/' + id)
+                .then((data2) => {
+                    data1.count = data2.count;
+                    Service.update("willSee/" + id, data1)
+                    .catch((error)=>'')
+                    setItems(
+                        items.map(item =>
+                            item.id === id ? {
+                                ...item,
+                                image: data1.image,
+                                name: data1.name,
+                                type: data1.type,
+                                price: data1.price
+                            } : item)
+                    )
+                    console.info('End synchronize edit');
+                    setModalTable(false)
+                })
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
         }
-        setEdit(false)
     };
     function handleAddItemToWillSee(item) {
         console.info('Try to plus item in will see');
+        item.count = 1;
         Service.create('willSee/', item)
             .catch((error) => {
                 Service.read('willSee/' + item.id)

@@ -16,10 +16,11 @@ a.itemLink {
 a.itemLink:hover {
     text-decoration: underline;
 }
-a.nav-link {
+a {
+    text-decoration: none;
     color: lightgray;
 }
-a.nav-link:hover {
+a:hover {
     color: white;
 }
 .content {
@@ -34,8 +35,8 @@ a.nav-link:hover {
     width: 90px;
     height: 120px;
 }
-input {
-    max-width: 200px;
+.mainInput {
+    max-width: 200px !important;
 }
 table tbody tr td {
     color: lightgray;

@@ -6,7 +6,7 @@ export default function Item(props) {
         <tr>
             <td>
                 <div className="border-black">
-                    <img className="posterItem me-3" src={props.item.image} alt={props.item.name} align="left" />
+                    <img className="posterItem me-3" src={props.item.image} alt={props.item.name} align="left"/>
                     <div className="d-flex flex-row flex-wrap  flex-grow-1 align-items-center">
                         <div className="pt-3 description d-flex flex-column justify-content-start align-items-center mb-3 fs-6 fw-bold">
                             <p className="text-start description">

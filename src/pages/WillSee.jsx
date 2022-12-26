@@ -61,7 +61,7 @@ export default function WillSee() {
         })
     };
 
-    const searchInput = <input className="form-control my-2 me-3" type="text" value={itemName} onChange={e => setItemName(e.target.value)} placeholder="Введите название" />
+    const searchInput = <input className="form-control my-2 me-3 mainInput" type="text" value={itemName} onChange={e => setItemName(e.target.value)} placeholder="Введите название" />
 
     const content = (
         <>
