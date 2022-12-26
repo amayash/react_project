@@ -1,5 +1,6 @@
 .myModal {
     position: fixed;
+    /*растягиваем модалку на все окно*/
     top: 0;
     bottom: 0;
     right: 0;
