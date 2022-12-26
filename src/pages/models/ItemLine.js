@@ -1,5 +1,5 @@
 export default class ItemLine {
-    constructor(image, name, type, price, count, id) {
+    constructor(image, name, type, price, id, count) {
         this.image = image;
         this.name = name;
         this.type = type;

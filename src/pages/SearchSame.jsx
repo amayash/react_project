@@ -49,6 +49,7 @@ export default function SearchSame() {
     return (
         <div>
             <ContentBlock
+                className="d-flex justify-content-start flex-wrap"
                 valueBlock={items.map((item) =>
                     <Item
                         item={item}

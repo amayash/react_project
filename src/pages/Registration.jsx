@@ -50,6 +50,6 @@ export default function Registration() {
     )
 
     return (
-        <ContentBlock valueBlock={Content} title='Регистрация' />
+        <ContentBlock className="d-flex justify-content-center flex-wrap" valueBlock={Content} title='Регистрация' />
     )
 }

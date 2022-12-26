@@ -4,42 +4,58 @@ body {
     background: #5e5e68;
     color: lightgray;
 }
+
 header {
     min-height: 64px !important;
 }
+
 footer {
     height: 50px !important;
     color: lightgray;
 }
+
 a.itemLink {
     text-decoration: none;
 }
+
 a.itemLink:hover {
     text-decoration: underline;
 }
+
 a {
     text-decoration: none;
     color: lightgray;
 }
+
 a:hover {
     color: white;
 }
+
 .content {
     min-height: calc(100vh - 64px - 50px - 6rem);
     background: #40444d;
 }
+
 .content_header {
     margin: -1.5em -1.5em 0em -1.5em;
     background-color: #8f9297;
 }
+
 .posterItem {
     width: 90px;
     height: 120px;
 }
+
 .mainInput {
     max-width: 200px !important;
 }
-.posterItemPage{
-    width: 50vh;
-    height: 60vh;
+
+.posterItemPage {
+    width: 100%;
+    height: auto;
+}
+
+.customTable {
+    min-width: 150px;
+    max-width: 300px;
 }

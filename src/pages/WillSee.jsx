@@ -64,6 +64,7 @@ export default function WillSee() {
     return (
         <div>
             <ContentBlock
+                className="d-flex justify-content-start flex-wrap"
                 valueBlock={items.map(item =>
                     (itemName === '' ? true : item.name.toLowerCase().includes(itemName.toLowerCase())) ?
                         <Item

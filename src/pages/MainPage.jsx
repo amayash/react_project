@@ -48,10 +48,9 @@ export default function Items() {
             .then(() => {
                 setItems(items.filter(elem => elem.id !== id))
                 console.log("Removed")
+                Service.delete(`willSee/${id}`)
+                    .catch((error) => '')
             });
-
-        Service.delete(`willSee/${id}`)
-            .catch((error) => '')
     };
     function handleEditItem(id) {
         console.info(`Start edit script`);
@@ -91,6 +90,7 @@ export default function Items() {
             console.info('Start synchronize edit');
             Service.update("lines/" + id, itemObject)
                 .then((data1) => {
+                    console.log(data1)
                     Service.read('willSee/' + id)
                         .then((data2) => {
                             data1.count = data2.count;
@@ -187,7 +187,7 @@ export default function Items() {
     return (
         <div>
             <Banner />
-            <ContentBlock valueBlock={Content} contentDop={modalAddButton} title='Товары' />
+            <ContentBlock className="d-flex justify-content-start flex-wrap" valueBlock={Content} contentDop={modalAddButton} title='Товары' />
         </div>
     )
 }
