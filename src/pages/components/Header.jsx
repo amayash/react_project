@@ -12,7 +12,7 @@ export default function Header(props) {
     function handleSubmit(e) {
         console.info('Try to search data');
         e.preventDefault();
-        navigate(`/search-same/${searchName}`)
+        navigate(`/search-same?request=${searchName}`)
         setSearchName('');
     }
 

@@ -14,9 +14,12 @@ export default function SearchSame() {
     useEffect(() => {
         let temp = JSON.stringify(searchResult);
         temp = JSON.parse(temp);
-        setItems(temp.filter(elem => elem.name.toLowerCase().includes(params.request.toLowerCase())));
+        console.log(params)
+        const query = new URLSearchParams(window.location.search);
+        setItems(temp.filter(elem => elem.name.toLowerCase().includes(query.get('request').toLowerCase())));
+        
     }, [searchResult, params]);
-
+    
     useState(() => {
         const fetchData = async () => {
             const url = new URL('http://localhost:8079/lines')

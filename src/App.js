@@ -18,7 +18,7 @@ export default function App() {
     { path: '/mainPage/:id', element: <CurrPage /> },
     { path: '/registration', element: <Registration />, label: 'Регистрация' },
     { path: '/willSee', element: <WillSee />, label: 'Корзина' },
-    { path: '/search-same/:request', element: <SearchSame /> }
+    { path: '/search-same', element: <SearchSame /> }
   ];
   const links = routes.filter(route => route.hasOwnProperty('label'));
   const rootRoute = [

@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import Item from './components/Item'
 import ContentBlock from './components/ContentBlock'
 import Modal from './components/Modal'
@@ -132,9 +132,44 @@ export default function Items() {
         setModalTable(true)
     }
 
+    const [ot, setOt] = useState(1);
+    const [doo, setDoo] = useState(1);
+
+    const params = useParams()
+
+    function periodSubmit(e) {
+        console.info('Try to search data');
+        e.preventDefault();
+        navigate(`/mainPage?min=${ot}&max=${doo}`)
+        console.log('searching')
+        const query = new URLSearchParams(window.location.search);
+        const min = query.get('min');
+        const max = query.get('max');
+        Service.readAll('lines')
+            .then(data => {
+                setItems(data.filter(elem => (elem.price * elem.sale) / 100 >= min && (elem.price * elem.sale) / 100 <= max))
+            })
+    }
     const modalAddButton = <button className="btn btn-success my-2 me-3" onClick={() => { setEdit(false); clearModalAndOpen(); }}><FontAwesomeIcon className="text-white" icon={faAdd} /></button>;
     const Content = (
         <>
+            <form className="container" id="frm-items" onSubmit={(e) => periodSubmit(e)}>
+                <div className="row">
+                    <label className="form-label" htmlFor="itemPrice">от</label>
+                    <input required className="form-control" type="number" value={ot} onChange={e => setOt(e.target.value)} min="1" step="0.01" placeholder="Введите цену" />
+                </div>
+                <div className="row">
+                    <label className="form-label" htmlFor="itemPrice">до</label>
+                    <input required className="form-control" name="itemPrice" id="itemPrice" type="number" value={doo} onChange={e => setDoo(e.target.value)} min="1" step="0.01" placeholder="Введите цену" />
+                </div>
+                <div className="text-center">
+                    <button className="btn btn-success fw-bold mx-1" type="submit">Отобразить</button>
+                    <button className="btn btn-danger fw-bold mx-1" onClick={() => {
+                        Service.readAll('lines')
+                            .then(data => setItems(data));
+                    }} type="button">Сбросить</button>
+                </div>
+            </form>
             <Modal visible={modalTable}>
                 <form className="row g-3 fs-4 fw-bold text-white" id="frm-items" onSubmit={(e) => handleSubmit(e, currEditItem)}>
                     <div className="row">

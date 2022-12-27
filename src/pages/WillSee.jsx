@@ -12,19 +12,12 @@ export default function WillSee() {
     const [itemName, setItemName] = useState('');
 
     useEffect(() => {
-        Service.readAll('willSee')
-            .then(data => {
-                for (let i = 0; i < data.length; i++) {
-                    Service.read('lines/' + data[i].id)
-                        .then((elem) => {
-                            for (let j in elem) {
-                                data[i][j] = elem[j];
-                            }
-                            setItems(data)
-                        })
-                }
-            });
+        Service.readAll('willSee?_expand=lines')
+            .then((data) => {
+                setItems(data)
+            })
     }, []);
+
 
     function handleDeleteItem(id) {
         console.info('Try to remove item from will see');
@@ -81,7 +74,7 @@ export default function WillSee() {
         <div>
             <ContentBlock
                 className="d-flex justify-content-start flex-wrap"
-                valueBlock={items.map(item =>
+                valueBlock={items.map(item => 
                     (itemName === '' ? true : item.name.toLowerCase().includes(itemName.toLowerCase())) ?
                         <Item
                             item={item}
