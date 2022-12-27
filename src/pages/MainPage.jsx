@@ -128,6 +128,7 @@ export default function Items() {
             setItemName('');
             setItemType('');
             setItemPrice(1);
+            setItemSale(0);
         }
         setModalTable(true)
     }
