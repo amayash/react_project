@@ -22,6 +22,7 @@ export default function Items() {
     const [itemName, setItemName] = useState('');
     const [itemType, setItemType] = useState('');
     const [itemPrice, setItemPrice] = useState(1);
+    const [itemSale, setItemSale] = useState(0);
 
     const [edit, setEdit] = useState(false);
     // хук для запоминания индекса элемента, вызвавшего модальное окно
@@ -60,6 +61,7 @@ export default function Items() {
                 setItemName(data.name);
                 setItemType(data.type);
                 setItemPrice(data.price);
+                setItemSale(data.sale);
                 setCurrEditItem(data.id);
                 setModalTable(true)
                 console.info('End edit script');
@@ -68,7 +70,8 @@ export default function Items() {
     // принимаем событие от кнопки "добавить" или "изменить"
     const handleSubmit = (e, id) => {
         e.preventDefault(); // страница перестает перезагружаться
-        const itemObject = new ItemLine(selectedImage, itemName, itemType, itemPrice, id);
+        const itemObject = new ItemLine(selectedImage, itemName, itemType, itemPrice, id, itemSale);
+        console.log(itemObject)
         if (!edit) {
             console.info('Try to add item');
 
@@ -78,6 +81,7 @@ export default function Items() {
                     setItemName('');
                     setItemType('');
                     setItemPrice(1);
+                    setItemSale(1);
                     console.info('Added');
                     setModalTable(false)
                 })
@@ -90,35 +94,26 @@ export default function Items() {
             console.info('Start synchronize edit');
             Service.update("lines/" + id, itemObject)
                 .then((data1) => {
-                    console.log(data1)
-                    Service.read('willSee/' + id)
-                        .then((data2) => {
-                            data1.count = data2.count;
-                            Service.update("willSee/" + id, data1)
-                                .catch((error) => '')
-                            setItems(
-                                items.map(item =>
-                                    item.id === id ? {
-                                        ...item,
-                                        image: data1.image,
-                                        name: data1.name,
-                                        type: data1.type,
-                                        price: data1.price
-                                    } : item)
-                            )
-                            console.info('End synchronize edit');
-                            setModalTable(false)
-                        })
+                    setItems(
+                        items.map(item =>
+                            item.id === id ? {
+                                ...item,
+                                image: data1.image,
+                                name: data1.name,
+                                type: data1.type,
+                                price: data1.price,
+                                sale: data1.sale
+                            } : item)
+                    )
+                    console.info('End synchronize edit');
+                    setModalTable(false)
                 })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
         }
     };
     function handleAddItemToWillSee(item) {
         console.info('Try to plus item in will see');
-        item.count = 1;
-        Service.create('willSee/', item)
+        const element = { "id": item.id, "linesId": item.id, "count": 1 };
+        Service.create('willSee/', element)
             .catch((error) => {
                 Service.read('willSee/' + item.id)
                     .then((data) => {
@@ -165,6 +160,10 @@ export default function Items() {
                         <label className="form-label" htmlFor="itemPrice">Цена</label>
                         <input required className="form-control" name="itemPrice" id="itemPrice" type="number" value={itemPrice} onChange={e => setItemPrice(e.target.value)} min="1" step="0.01" placeholder="Введите цену" />
                     </div>
+                    <div className="row">
+                        <label className="form-label" htmlFor="itemSale">Скидка</label>
+                        <input required className="form-control" name="itemSale" id="itemSale" type="number" value={itemSale} onChange={e => setItemSale(e.target.value)} min="0" step="1" max="90" placeholder="Введите скидку" />
+                    </div>
                     <div className="text-center">
                         <button className="btn btn-success fw-bold mx-1" type="submit">{edit ? 'Сохранить изменения' : 'Добавить'}</button>
                         <button className="btn btn-danger fw-bold mx-1" type="button" data-bs-dismiss="modal" onClick={() => { setEdit(false); setModalTable(false) }}>Отмена</button>
@@ -186,7 +185,7 @@ export default function Items() {
 
     return (
         <div>
-            <Banner />
+            {/* <Banner /> */}
             <ContentBlock className="d-flex justify-content-start flex-wrap" valueBlock={Content} contentDop={modalAddButton} title='Товары' />
         </div>
     )

@@ -26,8 +26,8 @@ export default function CurrPage() {
 
     function handleAddItemToWillSee(item) {
         console.info('Try to plus item in will see');
-        item.count = 1;
-        Service.create('willSee/', item)
+        const element = { "id": item.id, "linesId": item.id, "count": 1 };
+        Service.create('willSee/', element)
             .catch((error) => {
                 Service.read('willSee/' + item.id)
                     .then((data) => {

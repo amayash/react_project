@@ -13,7 +13,17 @@ export default function WillSee() {
 
     useEffect(() => {
         Service.readAll('willSee')
-            .then(data => setItems(data));
+            .then(data => {
+                for (let i = 0; i < data.length; i++) {
+                    Service.read('lines/' + data[i].id)
+                        .then((elem) => {
+                            for (let j in elem) {
+                                data[i][j] = elem[j];
+                            }
+                            setItems(data)
+                        })
+                }
+            });
     }, []);
 
     function handleDeleteItem(id) {
@@ -27,37 +37,43 @@ export default function WillSee() {
 
     function handleMinusItem(item) {
         console.info('Try to minus item from will see');
-        item.count -= 1;
-        if (item.count == 0) {
-            handleDeleteItem(item.id)
-            return;
-        }
-        Service.update('willSee/' + item.id, item)
-            .then(() => {
-                setItems(
-                    items.map(elem =>
-                        elem.id === item.id ? {
-                            ...elem,
-                            count: item.count
-                        } : elem)
-                )
-                console.info('Done');
+        Service.read('willSee/' + item.id)
+            .then((data) => {
+                data.count -= 1;
+                if (data.count == 0) {
+                    handleDeleteItem(item.id)
+                    return;
+                }
+                Service.update('willSee/' + item.id, data)
+                    .then(() => {
+                        setItems(
+                            items.map(elem =>
+                                elem.id === data.id ? {
+                                    ...elem,
+                                    count: data.count
+                                } : elem)
+                        )
+                        console.info('Done');
+                    })
             })
     };
 
     function handleAddItem(item) {
         console.info('Try to plus item in will see');
-        item.count += 1;
-        Service.update('willSee/' + item.id, item)
-            .then(() => {
-                setItems(
-                    items.map(elem =>
-                        elem.id === item.id ? {
-                            ...elem,
-                            count: item.count
-                        } : elem)
-                )
-                console.info('Done');
+        Service.read('willSee/' + item.id)
+            .then((data) => {
+                data.count += 1;
+                Service.update('willSee/' + item.id, data)
+                    .then(() => {
+                        setItems(
+                            items.map(elem =>
+                                elem.id === data.id ? {
+                                    ...elem,
+                                    count: data.count
+                                } : elem)
+                        )
+                        console.info('Done');
+                    })
             })
     };
 
