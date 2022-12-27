@@ -10,6 +10,8 @@ export default function WillSee() {
     const navigate = useNavigate();
     // массив для ввода
     const [itemName, setItemName] = useState('');
+    const [cost, setCost] = useState(0);
+    const [salePersonal, setSalePersonal] = useState(0);
 
     useEffect(() => {
         Service.readAll('willSee?_expand=lines')
@@ -18,13 +20,31 @@ export default function WillSee() {
             })
     }, []);
 
+    useEffect(() => {
+        summ(items)
+    }, [items])
+
+    useEffect(() => {
+        setSalePersonal(0)
+        if (cost>=100)
+           setSalePersonal(10)
+        if (cost>=200)
+            setSalePersonal(20)
+    }, [cost])
+
+    function summ(data) {
+        let tem = 0;
+        for (let i = 0; i < data.length; i++) {
+            tem += data[i].count * Number(data[i].lines.price) * (100 - data[i].lines.sale) / 100;
+        }
+        setCost(tem);
+    }
 
     function handleDeleteItem(id) {
         console.info('Try to remove item from will see');
         Service.delete(`willSee/${id}`)
             .then(() => {
                 setItems(items.filter(elem => elem.id !== id))
-                console.log("Removed from will see")
             });
     };
 
@@ -34,6 +54,7 @@ export default function WillSee() {
             .then((data) => {
                 data.count -= 1;
                 if (data.count == 0) {
+                    setCost(cost - item.lines.price)
                     handleDeleteItem(item.id)
                     return;
                 }
@@ -74,21 +95,26 @@ export default function WillSee() {
         <div>
             <ContentBlock
                 className="d-flex justify-content-start flex-wrap"
-                valueBlock={items.map(item => 
-                    (itemName === '' ? true : item.name.toLowerCase().includes(itemName.toLowerCase())) ?
-                        <Item
-                            item={item}
-                            countItems={item.count}
-                            key={item.id}
-                            minusFunc={handleMinusItem}
-                            removeFunc={handleDeleteItem}
-                            addItemToWillSee={handleAddItem}
-                            openItemPageFunc={(index) => navigate(`/mainPage/${index}`)}
-                        /> : null)
+                valueBlock={<>
+                    {items.map(item =>
+                        (itemName === '' ? true : item.name.toLowerCase().includes(itemName.toLowerCase())) ?
+                            <Item
+                                item={item}
+                                countItems={item.count}
+                                key={item.id}
+                                minusFunc={handleMinusItem}
+                                removeFunc={handleDeleteItem}
+                                addItemToWillSee={handleAddItem}
+                                openItemPageFunc={(index) => navigate(`/mainPage/${index}`)}
+                            /> : null)}
+                    <label> Итого: {cost} <br/> Персональная скидка: {salePersonal}% <br/> 
+                    К оплате: { ((100-salePersonal)/100*cost).toFixed(2) }</label>
+                </>
                 }
                 title="Корзина"
                 contentDop={<input className="form-control my-2 me-3 mainInput"
-                    type="text" value={itemName} onChange={e => setItemName(e.target.value)} placeholder="Введите название" />} />
+                    type="text" value={itemName} onChange={e => setItemName(e.target.value)}
+                    placeholder="Введите название" />} />
         </div>
     )
 }

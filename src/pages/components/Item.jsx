@@ -2,7 +2,6 @@ import React from "react"
 import MyButton from './MyButton'
 
 export default function Item(props) {
-    
     const data = props.item;
     if (data.lines) {
         for (let elem in data.lines) {
@@ -26,7 +25,7 @@ export default function Item(props) {
                             {data.name}
                         </a>
                         <br />{data.type} <br />
-                        {typeof props.countItems === 'undefined' ? price.toFixed(2) : (price * props.countItems).toFixed(2)} $
+                        {typeof props.countItems === 'undefined' ? parseFloat(price).toFixed(2) : (price * props.countItems).toFixed(2)} $
                         {sale > 0 ? <label className="text-danger"> -{sale}%</label> : null}</p>
                 </div>
                 <div className="d-flex flex-wrap justify-content-end fw-bold fs-4 flex-grow-1">
