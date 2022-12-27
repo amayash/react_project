@@ -135,21 +135,26 @@ export default function Items() {
     const [ot, setOt] = useState(1);
     const [doo, setDoo] = useState(1);
 
-    const params = useParams()
+    function validNum(elem) {
+        const query = new URLSearchParams(window.location.search);
+        const min = query.get('min');
+        const max = query.get('max');
+        const price = elem.price - (elem.price * elem.sale) / 100;
+        return price >= min && price <= max;
+    }
 
     function periodSubmit(e) {
         console.info('Try to search data');
         e.preventDefault();
         navigate(`/mainPage?min=${ot}&max=${doo}`)
         console.log('searching')
-        const query = new URLSearchParams(window.location.search);
-        const min = query.get('min');
-        const max = query.get('max');
+        
         Service.readAll('lines')
             .then(data => {
-                setItems(data.filter(elem => (elem.price * elem.sale) / 100 >= min && (elem.price * elem.sale) / 100 <= max))
+                setItems(data.filter(validNum))
             })
     }
+
     const modalAddButton = <button className="btn btn-success my-2 me-3" onClick={() => { setEdit(false); clearModalAndOpen(); }}><FontAwesomeIcon className="text-white" icon={faAdd} /></button>;
     const Content = (
         <>
